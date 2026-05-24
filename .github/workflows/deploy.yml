@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Dispara a automação toda vez que você fizer um push na branch principal
+  push:
+    branches: [ main ]
+  # Permite rodar o script manualmente na aba "Actions" do GitHub, se precisar
+  workflow_dispatch:
+
+# Permissões necessárias para o GitHub ler o código e publicar a página
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+        
+      - name: Instalar dependências, construir e fazer upload do site
+        uses: withastro/action@v3
+        # O Astro detecta automaticamente se você usa npm, yarn ou pnpm
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
