@@ -22,6 +22,8 @@ jobs:
         
       - name: Instalar dependências, construir e fazer upload do site
         uses: withastro/action@v3
+        with:
+            node-version: 22
         # O Astro detecta automaticamente se você usa npm, yarn ou pnpm
 
   deploy:
